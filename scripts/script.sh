@@ -102,10 +102,10 @@ createChannel() {
 }
 
 updateAnchorPeers() {
-        PEER=$1
-        setGlobals $PEER
+    PEER=$1
+    setGlobals $PEER
 
-        if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
+    if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
 		peer channel update -o orderer2.ORDERER_DOMAIN:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx >&log.txt
 	else
 		peer channel update -o orderer2.ORDERER_DOMAIN:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile $ORDERER0_CA >&log.txt
