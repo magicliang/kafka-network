@@ -8,8 +8,10 @@ version: '2'
 services:
   zookeeper:
     image: hyperledger/fabric-zookeeper
+    # 总是重启，倒是很适合 cli 用。对于这种回自动寻找 peer 的节点倒是也很有用。
     restart: always
     ports:
+      # zk 总是要开放三个端口的。
       - '2181'
       - '2888'
       - '3888'
@@ -18,14 +20,17 @@ services:
     image: hyperledger/fabric-kafka
     restart: always
     environment:
+      # 默认的关键三个环境变量只有这三个
       - KAFKA_MESSAGE_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+      # 上一个值要大于等于下一个值
       - KAFKA_REPLICA_FETCH_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
       - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
     ports:
       - '9092'
 
-  orderer.example.com:
-    container_name: orderer.example.com
+  # orderer 与 kafka 的关系，不是在这里可以看出来的，也不是在这里配置的，在 configtx 的配置里。
+  orderer.ORDERER_DOMAIN:
+    container_name: orderer.ORDERER_DOMAIN
     image: hyperledger/fabric-orderer
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
@@ -39,6 +44,9 @@ services:
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      # 从 fabric-test里学来的参数
+      - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+      - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
       - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
       - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
       - ORDERER_KAFKA_VERBOSE=true
@@ -46,11 +54,15 @@ services:
     command: orderer
     volumes:
     - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-    - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
-    - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
-    ports:
-      - 7050:7050
+    # 注意，如果使用多个orderer，实际上这个默认的路径不一定就有用，一定要被子服务覆盖。
+    # - ../crypto-config/ordererOrganizations/ORDERER_DOMAIN/orderers/orderer0.ORDERER_DOMAIN/msp:/var/hyperledger/orderer/msp
+    # - ../crypto-config/ordererOrganizations/ORDERER_DOMAIN/orderers/orderer0.ORDERER_DOMAIN/tls/:/var/hyperledger/orderer/tls
+    # 不准备做匿名数据卷
+    # orderere 不能开放这个端口，不然子服务即使开放了新的端口，还是会试图开放这个端口，以至于造成冲突。
+    # ports:
+      # - 7050:7050
 
+  # peer 要不要总是重启？
   peer0.org1.example.com:
     container_name: peer0.org1.example.com
     extends:
