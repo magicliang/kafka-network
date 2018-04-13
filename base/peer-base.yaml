@@ -12,6 +12,7 @@ services:
       # the following setting starts chaincode containers on the same
       # bridge network as the peers
       # https://docs.docker.com/compose/networking/
+      # 为了不用 version 3.5 的语法，暂时就用这个丑陋的自动生成的网络名吧。
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=kafkanetwork_default
       #- CORE_LOGGING_LEVEL=ERROR
       - CORE_LOGGING_LEVEL=DEBUG
