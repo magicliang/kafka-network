@@ -21,7 +21,7 @@ services:
   # 又再进一步重写这个 service 的环境变量，让它可以连接到 couchdb 上。这个文件必须和主compose文件一起被 docker-compose 命令使用。
   peer0.org1.example.com:
     environment:
-      # 只要用环境变量一改就可以用 couchdb 了。当然还有一些其他的细节。
+      # 只要用环境变量一改就可以用 couchdb 了。当然还有一些其他的细节，可以在 peer.yaml 里面配置。
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
