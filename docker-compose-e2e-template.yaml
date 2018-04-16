@@ -123,11 +123,11 @@ services:
       - zookeeper1
       - zookeeper2
 
-  orderer.example.com:
+  ORDERER_DOMAIN:
     extends:
       file:   base/docker-compose-base.yaml
-      service: orderer.example.com
-    container_name: orderer.example.com
+      service: ORDERER_DOMAIN
+    container_name: ORDERER_DOMAIN
     depends_on:
       - kafka0
       - kafka1
