@@ -13,8 +13,10 @@ IF_COUCHDB="$4"
 
 : ${CLI_TIMEOUT:="10000"}
 
-COMPOSE_FILE=docker-compose-cli.yaml
-COMPOSE_FILE_COUCH=docker-compose-couch.yaml
+COMPOSE_FILE_ORDERER=docker-compose-orderer.yaml
+COMPOSE_FILE_PEER=docker-compose-peer.yaml
+COMPOSE_FILE_PEER_COUCH=docker-compose-couch.yaml
+COMPOSE_FILE_CLI=docker-compose-cli.yaml
 #COMPOSE_FILE=docker-compose-e2e.yaml
 
 function printHelp () {
@@ -60,11 +62,8 @@ function networkUp () {
       source generateArtifacts.sh $CH_NAME
     fi
 
-    if [ "${IF_COUCHDB}" == "couchdb" ]; then
-      CHANNEL_NAME=$CH_NAME TIMEOUT=$CLI_TIMEOUT docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_COUCH up -d 2>&1
-    else
-      CHANNEL_NAME=$CH_NAME TIMEOUT=$CLI_TIMEOUT docker-compose -f $COMPOSE_FILE up -d 2>&1
-    fi
+    CHANNEL_NAME=$CH_NAME TIMEOUT=$CLI_TIMEOUT docker-compose -f $COMPOSE_FILE_ORDERER -f $COMPOSE_FILE_PEER -f $COMPOSE_FILE_PEER_COUCH -f $COMPOSE_FILE_CLI up -d 2>&1
+
     if [ $? -ne 0 ]; then
 	echo "ERROR !!!! Unable to pull the images "
 	exit 1
@@ -73,14 +72,14 @@ function networkUp () {
 }
 
 function networkDown () {
-    docker-compose -f $COMPOSE_FILE down
+    docker-compose -f $COMPOSE_FILE_ORDERER -f $COMPOSE_FILE_PEER -f $COMPOSE_FILE_PEER_COUCH -f $COMPOSE_FILE_CLI up  down
 
     #Cleanup the chaincode containers
     clearContainers
 
     #Cleanup images
     removeUnwantedImages
-
+    
     # remove orderer block and other channel configuration transactions and certs
     rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config
 }

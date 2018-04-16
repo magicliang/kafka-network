@@ -1,0 +1,43 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+networks:
+  default:
+    
+services:
+  peer0.ORG1_DOMAIN:
+    container_name: peer0.ORG1_DOMAIN
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.ORG1_DOMAIN
+    networks:
+      - default
+
+  peer1.ORG1_DOMAIN:
+    container_name: peer1.ORG1_DOMAIN
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.ORG1_DOMAIN
+    networks:
+      - default
+
+  peer0.ORG2_DOMAIN:
+    container_name: peer0.ORG2_DOMAIN
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.ORG2_DOMAIN
+    networks:
+      - default
+
+
+  peer1.ORG2_DOMAIN:
+    container_name: peer1.ORG2_DOMAIN
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.ORG2_DOMAIN
+    networks:
+      - default
