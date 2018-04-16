@@ -15,7 +15,7 @@ FILES="./docker-compose-e2e-template.yaml
 "
 for f in $FILES
 do
-	# sed -i_backup "s/org1.example.com/ORG1_DOMAIN/g" $f
+	sed -i_backup "s/org1.example.com/ORG1_DOMAIN/g" $f
 	# sed -i_backup "s/org2.example.com/ORG2_DOMAIN/g" $f
 	sed -i_backup "s/orderer.example.com/ORDERER_DOMAIN/g" $f
 	rm "${f}_backup"
