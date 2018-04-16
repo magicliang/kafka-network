@@ -107,44 +107,44 @@ services:
       - 8052:7052
       - 8053:7053
 
-  peer0.org2.example.com:
-    container_name: peer0.org2.example.com
+  peer0.ORG2_DOMAIN:
+    container_name: peer0.ORG2_DOMAIN
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.org2.example.com
-      - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.org2.example.com:7052
+      - CORE_PEER_ID=peer0.ORG2_DOMAIN
+      - CORE_PEER_ADDRESS=peer0.ORG2_DOMAIN:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.ORG2_DOMAIN:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.ORG2_DOMAIN:7051
       - CORE_PEER_LOCALMSPID=Org2MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/ORG2_DOMAIN/peers/peer0.ORG2_DOMAIN/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/ORG2_DOMAIN/peers/peer0.ORG2_DOMAIN/tls:/etc/hyperledger/fabric/tls
     ports:
       - 9051:7051
       - 9052:7052
       - 9053:7053
 
-  peer1.org2.example.com:
-    container_name: peer1.org2.example.com
+  peer1.ORG2_DOMAIN:
+    container_name: peer1.ORG2_DOMAIN
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer1.org2.example.com
-      - CORE_PEER_ADDRESS=peer1.org2.example.com:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer1.org2.example.com:7052
+      - CORE_PEER_ID=peer1.ORG2_DOMAIN
+      - CORE_PEER_ADDRESS=peer1.ORG2_DOMAIN:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.ORG2_DOMAIN:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.example.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.ORG2_DOMAIN:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.ORG2_DOMAIN:7051
       - CORE_PEER_LOCALMSPID=Org2MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/ORG2_DOMAIN/peers/peer1.ORG2_DOMAIN/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/ORG2_DOMAIN/peers/peer1.ORG2_DOMAIN/tls:/etc/hyperledger/fabric/tls
     ports:
       - 10051:7051
       - 10052:7052
