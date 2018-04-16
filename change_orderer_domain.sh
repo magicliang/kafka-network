@@ -1,9 +1,15 @@
 #!/bin/bash
 
-echo "reverting org1.example.com to ORG1_DOMAIN"
+echo "chaning ORDERER_DOMAIN to $1"
+
+if [ ! -z "$1" -a "$1" != " " ]; then
+
+echo "chaning ORDERER_DOMAIN to $1"
+
 
 FILES="./docker-compose-e2e-template.yaml
 ./docker-compose-couch.yaml
+./docker-compose-e2e.yaml
 ./docker-compose-cli.yaml
 ./crypto-config.yaml
 ./scripts/script.sh
@@ -12,5 +18,8 @@ FILES="./docker-compose-e2e-template.yaml
 "
 for f in $FILES
 do
-	git checkout $f
+	sed -i_backup "s/ORDERER_DOMAIN/$1/g" $f
+	rm "${f}_backup"
 done
+
+fi
