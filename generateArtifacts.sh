@@ -27,17 +27,17 @@ function replacePrivateKey () {
 		OPTS="-i"
 	fi
 
-	cp docker-compose-e2e-template.yaml docker-compose-e2e.yaml
+	#cp docker-compose-e2e-template.yaml docker-compose-e2e.yaml
 
         CURRENT_DIR=$PWD
         cd crypto-config/peerOrganizations/ORG1_DOMAIN/ca/
         PRIV_KEY=$(ls *_sk)
         cd $CURRENT_DIR
-        sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
+        #sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
         cd crypto-config/peerOrganizations/ORG2_DOMAIN/ca/
         PRIV_KEY=$(ls *_sk)
         cd $CURRENT_DIR
-        sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
+        #sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
 }
 
 ## Generates Org certs using cryptogen tool
